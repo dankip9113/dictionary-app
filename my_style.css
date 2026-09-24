@@ -1,0 +1,9 @@
+#input{
+    display:flex;
+    height: 200px;
+    width: 200px;
+    justify-content: center;
+    justify-self: center;
+    align-items: center;
+
+}
