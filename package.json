@@ -1,6 +1,11 @@
 {
+  "type": "commonjs",
   "dependencies": {
     "axios": "^1.20.0",
-    "request": "^2.88.2"
+    "deepl-node": "^1.28.0",
+    "express": "^5.2.1",
+    "hbs": "^4.3.1",
+    "request": "^2.88.2",
+    "require": "^2.4.20"
   }
 }
