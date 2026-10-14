@@ -1,64 +1,66 @@
-const MY_INPUT = document.getElementById("my_input");
-const MY_ENTRIES = document.getElementById("entries");
-const MY_ENTER = document.getElementById("my_enter");
-const MY_RANDOM = document.getElementById("my_random");
-const MY_TRANSLATE = document.getElementById("my_translate");
+const inputBtn = document.getElementById("my_input");
+const entries = document.getElementById("entries");
+const enterButton = document.getElementById("my_enter");
+const randomBtn = document.getElementById("my_random");
+const translateBtn = document.getElementById("my_translate");
 
-const ERROR = document.getElementById("error");
-const WORD = document.getElementById("word");
-const DEFINITION = document.getElementById("definition");
-const PART_OF_SPEECH = document.getElementById("part_of_speech");
-const SYNONYMS = document.getElementById("synonyms");
+const errorElement = document.getElementById("error");
+const wordElement = document.getElementById("word");
+const definitionElement = document.getElementById("definition");
+const partOfSpeechElement = document.getElementById("part_of_speech");
+const synonymsElement = document.getElementById("synonyms");
+
+const MY_TRANSLATE_URL = "http://localhost:3000/translate";
+const MY_DICTIONARY_URL = "http://localhost:3000/search?word=";
+const MY_RANDOM_URL = "http://localhost:3000/random";
 
 let word;
 let dataToTranslate;
 
-const GetWordFromInput = () => {
-  word = MY_INPUT.value;
+const getWordFromInput = () => {
+  word = inputBtn.value;
 
-  GetWordDataFromServer(word);
+  getWordDataFromServer(word);
 };
-const GetDataFromHTML = () => {
+const getDataFromHTML = () => {
+  text = [
+    wordElement.textContent,
+    definitionElement.textContent,
+    partOfSpeechElement.textContent,
+    synonymsElement.textContent,
+  ];
+
   dataToTranslate = {
-    text: [
-      WORD.textContent,
-      DEFINITION.textContent,
-      PART_OF_SPEECH.textContent,
-      SYNONYMS.textContent,
-    ],
+    text: text.filter((element) => element !== ""),
     language: "he",
   };
-  let temp = dataToTranslate.text.filter((element) => element !== "");
-  dataToTranslate.text = temp;
 
   if (dataToTranslate.text.length != 0) {
-    GetTranslateDataFromServer(dataToTranslate);
+    getTranslateDataFromServer(dataToTranslate);
   }
 };
-const GetRandomWordFromServer = async () => {
-  fetch("http://localhost:3000/random?address=!").then((response) => {
+const getRandomWordFromServer = async () => {
+  fetch(MY_RANDOM_URL).then((response) => {
     response.json().then((data) => {
       if (data.error) {
-        return SetErrorToHTML(data.error);
-      } else {
-        GetWordDataFromServer(data.word);
+        return setErrorToHTML(data.error);
       }
+      getWordDataFromServer(data.word);
     });
   });
 };
-const GetWordDataFromServer = async (word) => {
-  fetch("http://localhost:3000/search?address=" + word).then((response) => {
+const getWordDataFromServer = async (word) => {
+  fetch(MY_DICTIONARY_URL + word).then((response) => {
     response.json().then((data) => {
       if (data.error) {
-        return SetErrorToHTML(data.error);
-      } else {
-        SetDataToHTML(data);
+        return setErrorToHTML(data.error);
       }
+      setDataToHTML(data);
     });
   });
 };
-const GetTranslateDataFromServer = async (data) => {
-  fetch("http://localhost:3000/translate", {
+const getTranslateDataFromServer = async (data) => {
+  fetch(MY_TRANSLATE_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -67,41 +69,32 @@ const GetTranslateDataFromServer = async (data) => {
   }).then((response) => {
     response.json().then((data) => {
       if (data.error) {
-        return SetErrorToHTML(data.error);
-      } else {
-        SetTranslatedDataToHTML(data);
+        return setErrorToHTML(data.error);
       }
+      setDataToHTML(data);
     });
   });
 };
-const SetDataToHTML = (word_data) => {
-  ClearTextInHTML();
-  WORD.textContent = word_data.word;
-  DEFINITION.textContent = "Definition -- " + word_data.def;
-  PART_OF_SPEECH.textContent = "Part of speech -- " + word_data.pos;
-  SYNONYMS.textContent = "Synonyms -- " + word_data.syn;
-};
-const SetTranslatedDataToHTML = (data) => {
-  ClearTextInHTML();
-  WORD.textContent = data.word;
-  DEFINITION.textContent = data.def;
-  PART_OF_SPEECH.textContent = data.pos;
-  SYNONYMS.textContent = data.syn;
+const setDataToHTML = (word_data) => {
+  errorElement.textContent = "";
+  wordElement.textContent = word_data.word;
+  definitionElement.textContent = word_data.defition;
+  partOfSpeechElement.textContent = word_data.partOfSpeech;
+  synonymsElement.textContent = word_data.synonyms;
 };
 
-const SetErrorToHTML = (error) => {
-  ClearTextInHTML();
-  ERROR.innerHTML = "ERROR -- " + error;
+const setErrorToHTML = (error) => {
+  errorElement.innerHTML = "ERROR -- " + error;
 };
 
-const ClearTextInHTML = () => {
-  ERROR.textContent = "";
-  WORD.textContent = "";
-  DEFINITION.textContent = "";
-  PART_OF_SPEECH.textContent = "";
-  SYNONYMS.textContent = "";
+const clearTextInHTML = () => {
+  errorElement.textContent = "";
+  wordElement.textContent = "";
+  definitionElement.textContent = "";
+  partOfSpeechElement.textContent = "";
+  synonymsElement.textContent = "";
 };
 
-MY_ENTER.addEventListener("click", GetWordFromInput);
-MY_RANDOM.addEventListener("click", GetRandomWordFromServer);
-MY_TRANSLATE.addEventListener("click", GetDataFromHTML);
+enterButton.addEventListener("click", getWordFromInput);
+randomBtn.addEventListener("click", getRandomWordFromServer);
+translateBtn.addEventListener("click", getDataFromHTML);

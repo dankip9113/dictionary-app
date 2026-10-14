@@ -1,14 +1,14 @@
 const deepL = require("deepl-node");
-
-const AUTHKEY = "10379b6a-d1e0-4d70-a145-9c9e32569d8c:fx";
+require("dotenv").config()
+const AUTHKEY = process.env.AUTHKEY
 const deepClient = new deepL.DeepLClient(AUTHKEY);
 
-let myData;
+let data;
 
-const translate = async (data, callback) => {
-  myData = data;
-  await deepClient
-    .translateText(myData.text, null, myData.language)
+const translate = async (text, callback) => {
+  data = text;
+  deepClient
+    .translateText(data.text, null, data.language)
     .then((result) => {
       return callback(undefined, createResponse(result));
     })
@@ -23,9 +23,9 @@ const createResponse = (data) => {
   });
   return {
     word: translatedData[0],
-    def: translatedData[1],
-    pos: translatedData[2],
-    syn: translatedData[3],
+    definition: translatedData[1],
+    partOfSpeech: translatedData[2],
+    synonyms: translatedData[3],
   };
 };
 

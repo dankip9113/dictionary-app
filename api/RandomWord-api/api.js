@@ -3,7 +3,7 @@ const RANDOM_URL = "https://random-word-api.herokuapp.com/word";
 
 let rndWord;
 
-const GetRandomWord = async (callback) => {
+const getRandomWord = async (callback) => {
   try {
     return await axios.get(RANDOM_URL).then((response) => {
       rndWord = response.data[0];
@@ -16,4 +16,4 @@ const GetRandomWord = async (callback) => {
     return callback("random-api dont work", undefined);
   }
 };
-exports.GetRandomWord = GetRandomWord;
+exports.getRandomWord = getRandomWord;

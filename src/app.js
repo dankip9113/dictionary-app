@@ -18,31 +18,26 @@ app.get("", (req, res) => {
 });
 
 app.get("/search", (req, res) => {
-  if (!req.query.address) {
+  if (!req.query.word) {
     return res.send({
       error: "word not defined",
     });
   }
-  dictionary.GetWordData(req.query.address, (error, response) => {
+  dictionary.getWordData(req.query.word, (error, response) => {
     if (error) {
       return res.send({ error });
     }
     res.send({
       word: req.query.address,
-      def: response.def,
-      pos: response.pos,
-      syn: response.syn,
+      definition: response.definition,
+      partOfSpeech: response.partOfSpeech,
+      synonyms: response.synonyms,
     });
   });
 });
 
 app.get("/random", (req, res) => {
-  if (!req.query.address) {
-    return res.send({
-      error: "random-api dont work",
-    });
-  }
-  random.GetRandomWord((error, response) => {
+  random.getRandomWord((error, response) => {
     if (error) {
       return res.send({ error });
     }
@@ -64,9 +59,9 @@ app.post("/translate", (req, res) => {
     }
     return res.send({
       word: response.word,
-      def: response.def,
-      pos: response.pos,
-      syn: response.syn,
+      definition: response.definition,
+      partOfSpeech: response.partOfSpeech,
+      synonyms: response.synonyms,
     });
   });
 });

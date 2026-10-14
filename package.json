@@ -4,8 +4,24 @@
     "axios": "^1.20.0",
     "deepl-node": "^1.28.0",
     "express": "^5.2.1",
-    "hbs": "^4.3.1",
-    "request": "^2.88.2",
-    "require": "^2.4.20"
-  }
+    "hbs": "^4.3.1"
+  },
+  "name": "dictionary_app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dankip9113/dictionary-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dankip9113/dictionary-app/issues"
+  },
+  "homepage": "https://github.com/dankip9113/dictionary-app#readme"
 }
